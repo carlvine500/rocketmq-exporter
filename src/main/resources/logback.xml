@@ -40,7 +40,11 @@
     </appender>
 
     <root level="INFO">
-        <appender-ref ref="STDOUT"/>
+        <if condition='property("os.name").contains("win") || property("os.name").contains("Mac")'>
+            <then>
+                <appender-ref ref="STDOUT" />
+            </then>
+        </if>
         <appender-ref ref="FILE"/>
     </root>
 

@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: apache-rocketmq-exporter
+  labels:
+    app: apache-rocketmq-exporter
+spec:
+  selector:
+    matchLabels:
+      app: apache-rocketmq-exporter
+  template:
+    metadata:
+      annotations:
+        deployName: apache-rocketmq-exporter
+        prometheus.io/path: /metrics
+        prometheus.io/port: "5557"
+        prometheus.io/scrape: "true"
+      labels:
+        app: apache-rocketmq-exporter
+    spec:
+      dnsPolicy: ClusterFirstWithHostNet
+      containers:
+      - name: apache-rocketmq-exporter
+        image: registry.bizsaas.net/arch/apache-rocketmq-exporter:0.0.2
+        imagePullPolicy: IfNotPresent
+        env:
+        - name: NAMESRV_ADDR
+          value: nameserver2-0.nameserver:9876;nameserver3-0.nameserver:9876
+        livenessProbe:
+          tcpSocket:
+            port: 5557
+          initialDelaySeconds: 15
+          periodSeconds: 20
+        volumeMounts:
+        - name: vlogs
+          mountPath: /root/logs/exporterlogs
+      volumes:
+        - name: vlogs
+          hostPath:
+            path: /root/logs/exporterlogs
