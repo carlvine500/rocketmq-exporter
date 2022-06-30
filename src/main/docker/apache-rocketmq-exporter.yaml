@@ -25,7 +25,7 @@ spec:
         imagePullPolicy: Always
         env:
         - name: NAMESRV_ADDR
-          value: nameserver2-0.nameserver:9876;nameserver3-0.nameserver:9876
+          value: nameserver2-0.nameserver:9878;nameserver3-0.nameserver:9878
         livenessProbe:
           tcpSocket:
             port: 5557
