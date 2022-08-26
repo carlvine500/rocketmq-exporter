@@ -17,8 +17,8 @@
 
 FROM registry.bizsaas.net/java:openjdk8-alpine-bash-cn
 MAINTAINER breeze
-ADD rocketmq-exporter-0.0.2-SNAPSHOT.jar quickstart.jar
+ADD rocketmq-exporter-0.0.2-SNAPSHOT.jar rocketmq-exporter.jar
 EXPOSE 5557
 ENV JAVA_OPTS="-Xmx256m -Xss256k"
 ENV NAMESRV_ADDR=nameserver:9876
-CMD java -jar -Drocketmq.config.namesrvAddr=$NAMESRV_ADDR $JAVA_OPTS  quickstart.jar
+CMD java -jar -Drocketmq.config.namesrvAddr=$NAMESRV_ADDR $JAVA_OPTS  rocketmq-exporter.jar
