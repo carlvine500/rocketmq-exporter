@@ -156,7 +156,7 @@
                 </executions>
             </plugin>
             <!-- Use dockerfile-maven instead, https://github.com/spotify/dockerfile-maven -->
-            <plugin>
+            <!--<plugin>
                 <groupId>com.spotify</groupId>
                 <artifactId>docker-maven-plugin</artifactId>
                 <version>0.4.11</version>
@@ -179,7 +179,7 @@
                         </resource>
                     </resources>
                 </configuration>
-            </plugin>
+            </plugin>-->
             <!--<plugin>
                 <groupId>org.apache.rat</groupId>
                 <artifactId>apache-rat-plugin</artifactId>
@@ -216,7 +216,7 @@
                     <check/>
                 </configuration>
             </plugin>
-            <plugin>
+            <!--<plugin>
                 <groupId>com.spotify</groupId>
                 <artifactId>docker-maven-plugin</artifactId>
                 <version>0.4.11</version>
@@ -239,6 +239,52 @@
                         </resource>
                     </resources>
                 </configuration>
+            </plugin>-->
+            <plugin>
+            <groupId>io.fabric8</groupId>
+            <artifactId>docker-maven-plugin</artifactId>
+            <version>0.41-cp-SNAPSHOT</version>
+            <configuration>
+                <images>
+                    <image>
+                        <name>registry.bizsaas.net/arch/apache-rocketmq-exporter:0.0.2</name>
+                        <build>
+                            <contextDir>${project.basedir}/docker</contextDir>
+                            <buildx>
+                                <platforms>
+                                    <platform>linux/amd64</platform>
+                                    <platform>linux/arm64</platform>
+                                </platforms>
+                                <dockerStateDir>~/.docker</dockerStateDir>
+                            </buildx>
+                            <assembly>
+                                <mode>dir</mode>
+                                <name>/</name>
+                                <inline>
+                                    <id>docker-copy-files</id>
+                                    <fileSets>
+                                        <fileSet>
+                                            <directory>target</directory>
+                                            <includes>
+                                                <include>*.jar</include>
+                                                <include>*.war</include>
+                                            </includes>
+                                            <outputDirectory>./</outputDirectory>
+                                        </fileSet>
+                                        <fileSet>
+                                            <directory>docker</directory>
+                                            <includes>
+                                                <include>*</include>
+                                            </includes>
+                                            <outputDirectory>./</outputDirectory>
+                                        </fileSet>
+                                    </fileSets>
+                                </inline>
+                            </assembly>
+                        </build>
+                    </image>
+                </images>
+            </configuration>
             </plugin>
         </plugins>
 
